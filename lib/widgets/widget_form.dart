@@ -8,24 +8,30 @@ class WidgetForm extends StatelessWidget {
     this.suffixWidget,
     this.obscure,
     this.validateFunc,
+    this.textEditingController,
+    this.textInputType,
   }) : super(key: key);
 
   final String? hintText;
   final Widget? suffixWidget;
   final bool? obscure;
   final String? Function(String?)? validateFunc;
+  final TextEditingController? textEditingController;
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      child: TextFormField(validator: validateFunc,
+      child: TextFormField(keyboardType: textInputType,
+        controller: textEditingController,
+        validator: validateFunc,
         obscureText: obscure ?? false,
         decoration: InputDecoration(
           suffixIcon: suffixWidget,
           hintText: hintText,
           filled: true,
-          fillColor: Colors.grey.shade200,
+          fillColor: Colors.grey.shade100,
           border: InputBorder.none,
         ),
       ),

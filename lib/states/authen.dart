@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
+import 'package:gocheckproj/utility/app_service.dart';
 import 'package:gocheckproj/widgets/widget_button.dart';
 import 'package:gocheckproj/widgets/widget_form.dart';
 import 'package:gocheckproj/widgets/widget_icon_button.dart';
@@ -20,6 +21,9 @@ class _AuthenState extends State<Authen> {
   AppController appController = Get.put(AppController());
 
   final formKey = GlobalKey<FormState>();
+
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +84,14 @@ class _AuthenState extends State<Authen> {
     return WidgetButton(
       text: 'Login',
       pressFunc: () {
-        if (formKey.currentState!.validate()) {}
+        FocusManager.instance.primaryFocus?.unfocus();
+        if (formKey.currentState!.validate()) {
+          AppService().checkLogin(
+            username: userController.text,
+            password: passwordController.text,
+            context: context,
+          );
+        }
       },
       fullWidthButton: true,
     );
@@ -89,7 +100,8 @@ class _AuthenState extends State<Authen> {
   Widget formPassword() {
     return Obx(() {
       return WidgetForm(
-        hintText: 'password:',
+        textEditingController: passwordController,
+        hintText: 'Password:',
         suffixWidget: WidgetIconButton(
           iconData: appController.redEye.value
               ? Icons.visibility_off
@@ -101,7 +113,7 @@ class _AuthenState extends State<Authen> {
         obscure: appController.redEye.value,
         validateFunc: (p0) {
           if (p0?.isEmpty ?? true) {
-            return 'please fill password';
+            return 'โปรดกรอก password';
           } else {
             return null;
           }
@@ -112,11 +124,13 @@ class _AuthenState extends State<Authen> {
 
   WidgetForm formUser() {
     return WidgetForm(
-      hintText: 'user:',
+      textInputType: TextInputType.number,
+      textEditingController: userController,
+      hintText: 'Username:',
       suffixWidget: const Icon(Icons.account_circle_sharp),
       validateFunc: (p0) {
         if (p0?.isEmpty ?? true) {
-          return 'please fill User';
+          return 'โปรดกรอก Username';
         } else {
           return null;
         }

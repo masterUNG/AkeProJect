@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppConstant {
   //field
   static String appName = 'GoCheck NEXT';
-  static Color primaryColor = Color.fromARGB(255, 11, 138, 110);
+  static Color primaryColor = Color.fromARGB(255, 31, 128, 60);
   static Color mainColor = Color.fromARGB(255, 57, 194, 248);
 
   //method
@@ -26,7 +26,7 @@ class AppConstant {
       gradient: RadialGradient(
           colors: [Colors.white, mainColor],
           radius: 1.0,
-          center: const Alignment(-0.5, -0.8)),
+          center: const Alignment(0, -0.8)),
     );
   }
 

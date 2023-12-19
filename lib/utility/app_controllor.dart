@@ -5,5 +5,7 @@ class AppController extends GetxController {
 
   RxInt timePincode = 1.obs;
 
-  RxMap<String , dynamic> mapUser = <String , dynamic>{}.obs;
+  RxMap<String, dynamic> mapUser = <String, dynamic>{}.obs;
+
+  RxInt indexBody = 0.obs;
 }

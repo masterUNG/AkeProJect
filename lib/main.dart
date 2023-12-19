@@ -29,7 +29,7 @@ Future<void> main() async {
 
   await GetStorage.init().then((value) {
     var user = GetStorage().read('user');
-    print('##19dec user from GetStorage >>> $user');
+    
 
     if (user == null) {
       firsPage = '/authen';

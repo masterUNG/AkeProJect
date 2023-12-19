@@ -1,20 +1,26 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gocheckproj/states/main_hone.dart';
-import 'package:gocheckproj/utility/app_service.dart';
-import 'package:gocheckproj/utility/app_snackbar.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
+import 'package:gocheckproj/states/main_hone.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
+import 'package:gocheckproj/utility/app_dialog.dart';
+import 'package:gocheckproj/utility/app_service.dart';
+import 'package:gocheckproj/utility/app_snackbar.dart';
+import 'package:gocheckproj/widgets/widget_button.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
 
 class PinCode extends StatefulWidget {
   const PinCode({
     Key? key,
+    this.activePage,
   }) : super(key: key);
+
+  final String? activePage;
 
   @override
   State<PinCode> createState() => _PinCodeState();
@@ -25,12 +31,16 @@ class _PinCodeState extends State<PinCode> {
 
   OtpFieldController otpFieldControllor = OtpFieldController();
 
-  String? otpString;
+  String? pincodeString;
+  String? goActivePage;
 
   @override
   void initState() {
     super.initState();
     appController.timePincode.value = 1;
+    AppService().processFindMapUser().then(
+        (value) => print('##19dec >>>>>> ${appController.mapUser.value}'));
+    goActivePage = widget.activePage ?? '/mainHome';
   }
 
   @override
@@ -56,7 +66,41 @@ class _PinCodeState extends State<PinCode> {
                   length: 6,
                   width: 250,
                   fieldStyle: FieldStyle.box,
-                  onCompleted: (value) {},
+                  onCompleted: (value) {
+                    if (value == appController.mapUser['pincode']) {
+                      //ok
+                      Get.offAllNamed(goActivePage!);
+                    } else {
+                      if (appController.timePincode.value == 3) {
+                        AppDialog().normalDialog(
+                            title: 'โปรด Login ใหม่',
+                            iconWidget: const WidgetImageAsset(
+                              path: 'images/pincode.png',
+                              width: 200,
+                            ),
+                            contentWidget: const WidgetText(
+                                data:
+                                    'ผิด 3 ครั้ง!!  โปรด Login และ ตั้งค่า PIN CODE ใหม่อีกครั้ง '),
+                            actionWidget: WidgetButton(
+                              text: 'Login',
+                              pressFunc: () async {
+                                await GetStorage().erase().then((value) {
+                                  Get.back();
+                                  Get.offAllNamed('/authen');
+                                });
+                              },
+                            ));
+                      } else {
+                        AppSnackBar(
+                                title: 'PIN CODE พิดพลาด',
+                                message:
+                                    'กรุณาใส่ PIN CODE ใหม่ (เหลืออีก ${3 - appController.timePincode.value}) ครั้ง ')
+                            .errorSnackBar();
+                        otpFieldControllor.clear();
+                        appController.timePincode++;
+                      }
+                    }
+                  },
                   controller: otpFieldControllor,
                 ),
               ],

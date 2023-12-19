@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gocheckproj/states/authen.dart';
+import 'package:gocheckproj/states/main_hone.dart';
 import 'package:gocheckproj/states/pincode.dart';
 
 var getPages = <GetPage<dynamic>>[
@@ -14,6 +15,10 @@ var getPages = <GetPage<dynamic>>[
   GetPage(
     name: '/pincode',
     page: () => const PinCode(),
+  ),
+  GetPage(
+    name: '/mainHome',
+    page: () => const MainHome(),
   ),
 ];
 

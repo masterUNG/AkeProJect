@@ -71,4 +71,8 @@ class AppService {
         .write('user', mapUser)
         .then((value) => print('บันทึกสำเร็จ'));
   }
+
+  Future<void> processFindMapUser() async {
+    appController.mapUser.value =  await GetStorage().read('user');
+  }
 }

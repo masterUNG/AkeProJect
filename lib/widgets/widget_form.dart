@@ -23,7 +23,8 @@ class WidgetForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      child: TextFormField(keyboardType: textInputType,
+      child: TextFormField(
+        keyboardType: textInputType,
         controller: textEditingController,
         validator: validateFunc,
         obscureText: obscure ?? false,

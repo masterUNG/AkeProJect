@@ -2,12 +2,40 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gocheckproj/states/authen.dart';
+import 'package:gocheckproj/states/pincode.dart';
 
-void main() {
+var getPages = <GetPage<dynamic>>[
+  GetPage(
+    name: '/authen',
+    page: () => const Authen(),
+  ),
+  GetPage(
+    name: '/pincode',
+    page: () => const PinCode(),
+  ),
+];
+
+String? firsPage;
+
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverride();
 
-  runApp(MyApp());
+  await GetStorage.init().then((value) {
+    var user = GetStorage().read('user');
+    print('##19dec user from GetStorage >>> $user');
+
+    if (user == null) {
+      firsPage = '/authen';
+      runApp(const MyApp());
+    } else {
+      firsPage = '/pincode';
+      runApp(const MyApp());
+    }
+  });
+
+  
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +44,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: Authen(),
+      getPages: getPages,
+      initialRoute: firsPage,
     );
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:gocheckproj/models/user_model.dart';
 import 'package:gocheckproj/states/setup_pincode.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
@@ -26,7 +30,15 @@ class AppService {
 
     try {
       await Dio().post(AppConstant.urlLoginApi, data: map).then((value) {
-        print('ได้จาก API >>>>>>> $value');
+        // print('ได้จาก API >>>>>>> $value');
+
+        UserModel userModel = UserModel.fromMap(value.data);
+
+        Map<String, dynamic> mapUser = userModel.toMap();
+
+        mapUser['password'] = password;
+
+        print('### 19dec usermodel  ....>>> $mapUser');
 
         AppDialog().normalDialog(
             title: 'กำหนด PIN CODE',
@@ -39,9 +51,9 @@ class AppService {
               pressFunc: () {
                 Get.back();
 
-                //real
-                //Get.offAll(SetupPinCode(map: map));
-                Get.to(SetupPinCode(map: map));
+                Get.offAll(SetupPinCode(
+                  mapUser: mapUser,
+                ));
               },
             ));
       });
@@ -52,5 +64,11 @@ class AppService {
               message: 'กรุณาตรวจสอบ username หรือ password')
           .errorSnackBar();
     }
+  }
+
+  Future<void> processSaveUser({required Map<String, dynamic> mapUser}) async {
+    await GetStorage()
+        .write('user', mapUser)
+        .then((value) => print('บันทึกสำเร็จ'));
   }
 }

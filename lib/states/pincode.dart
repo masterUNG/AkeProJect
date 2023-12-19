@@ -11,20 +11,18 @@ import 'package:gocheckproj/utility/app_controllor.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
 
-class SetupPinCode extends StatefulWidget {
-  const SetupPinCode({
+class PinCode extends StatefulWidget {
+  const PinCode({
     Key? key,
-    required this.mapUser,
   }) : super(key: key);
 
-  final Map<String, dynamic> mapUser;
-
   @override
-  State<SetupPinCode> createState() => _SetupPinCodeState();
+  State<PinCode> createState() => _PinCodeState();
 }
 
-class _SetupPinCodeState extends State<SetupPinCode> {
+class _PinCodeState extends State<PinCode> {
   AppController appController = Get.put(AppController());
+
   OtpFieldController otpFieldControllor = OtpFieldController();
 
   String? otpString;
@@ -58,30 +56,7 @@ class _SetupPinCodeState extends State<SetupPinCode> {
                   length: 6,
                   width: 250,
                   fieldStyle: FieldStyle.box,
-                  onCompleted: (value) {
-                    if (appController.timePincode.value == 2) {
-                      if (otpString == value) {
-                        Map<String, dynamic> mapUser = widget.mapUser;
-                        mapUser['pincode'] = otpString;
-                        print('## 19dec >>>>>>> $mapUser');
-
-                        AppService()
-                            .processSaveUser(mapUser: mapUser)
-                            .then((value) => Get.offAll(const MainHome()));
-                      } else {
-                        appController.timePincode.value = 1;
-                        otpFieldControllor.clear();
-                        AppSnackBar(
-                                title: 'PIN CODE ผิดพลาด',
-                                message: 'โปรดกรอก PIN CODE ให้เหมือนกัน')
-                            .errorSnackBar();
-                      }
-                    } else {
-                      otpString = value;
-                      otpFieldControllor.clear();
-                      appController.timePincode.value++;
-                    }
-                  },
+                  onCompleted: (value) {},
                   controller: otpFieldControllor,
                 ),
               ],

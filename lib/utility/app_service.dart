@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:gocheckproj/models/checkup_model.dart';
 import 'package:gocheckproj/models/user_model.dart';
+import 'package:gocheckproj/states/pincode.dart';
 import 'package:gocheckproj/states/setup_pincode.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
@@ -14,6 +16,7 @@ import 'package:gocheckproj/utility/app_snackbar.dart';
 import 'package:gocheckproj/widgets/widget_button.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
+import 'package:intl/intl.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
@@ -73,6 +76,107 @@ class AppService {
   }
 
   Future<void> processFindMapUser() async {
-    appController.mapUser.value =  await GetStorage().read('user');
+    appController.mapUser.value = await GetStorage().read('user');
+  }
+
+  Future<void> readCheckUpResult() async {
+    String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/checkup_result';
+
+    Map<String, dynamic> map = {};
+    var valueIdentificationNumber = <String>[];
+    valueIdentificationNumber.add(appController.mapUser['username']);
+
+    map['identificationNumber'] = valueIdentificationNumber;
+
+    print('##20dec >>>>>>>$map');
+
+    Dio dio = Dio();
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        'Bearer ${appController.mapUser["token"]}';
+
+    try {
+      await dio.post(urlApi, data: map).then((value) {
+        if (appController.checkUpModel.isNotEmpty) {
+          appController.checkUpModel.clear();
+        }
+        var data = value.data['data'];
+
+        data.forEach((element) {
+          CheckUpModel checkUpModel = CheckUpModel.fromMap(element);
+          appController.checkUpModel.add(checkUpModel);
+        });
+      });
+    } on Exception catch (e) {
+      print(e);
+
+      AppDialog().normalDialog(
+          title: 'เวลา Login หมดอายุ ',
+          contentWidget:
+              const Center(child: WidgetText(data: 'กรุณาใส่ PIN CODE ใหม่')),
+          iconWidget: const WidgetImageAsset(
+            path: 'images/doctor1.png',
+          ),
+          actionWidget: WidgetButton(
+            text: 'PIN CODE',
+            pressFunc: () {
+              Get.back();
+              Get.offAll(const PinCode(
+                activePage: '/checkup',
+              ));
+            },
+          ));
+    }
+  }
+
+  Future<void> processUpdateToken() async {
+    if (appController.mapUser.isEmpty) {
+      processFindMapUser();
+    }
+
+    Map<String, String> map = {};
+    map['username'] = appController.mapUser['username'];
+    map['password'] = appController.mapUser['password'];
+
+    await Dio().post(AppConstant.urlLoginApi, data: map).then((value) async {
+      UserModel userModel = UserModel.fromMap(value.data);
+
+      Map<String, dynamic> currentMapUser = appController.mapUser;
+      currentMapUser['token'] = userModel.token;
+      await GetStorage().write('user', currentMapUser).then((value) {
+        print('## update token ');
+      });
+    });
+  }
+
+  String changeDateTimeToString({required String dateTimeString}) {
+    String string = dateTimeString;
+    var strings = string.split('T');
+
+    String dateString = strings[0];
+
+    var dateSrings = dateString.split('-');
+    DateTime dateTime = DateTime(int.parse(dateSrings[0]),
+        int.parse(dateSrings[1]), int.parse(dateSrings[2]));
+
+    DateFormat dateFormat = DateFormat('dd MMMM yyyy');
+
+    String result = dateFormat.format(dateTime);
+
+    return result;
+  }
+
+  Color calculateColorBmi({required double bmi}) {
+    Color color;
+
+    if (bmi < 26.0) {
+      color = Colors.green;
+    } else if (bmi < 26.8) {
+      color = Colors.yellow;
+    } else {
+      color = Colors.red;
+    }
+    return color;
   }
 }

@@ -68,8 +68,14 @@ class _PinCodeState extends State<PinCode> {
                   fieldStyle: FieldStyle.box,
                   onCompleted: (value) {
                     if (value == appController.mapUser['pincode']) {
-                      //ok
-                      Get.offAllNamed(goActivePage!);
+                      if (widget.activePage == null) {
+                        Get.offAllNamed(goActivePage!);
+                      } else {
+                        //for update token
+                        AppService()
+                            .processUpdateToken()
+                            .then((value) => Get.offAllNamed(goActivePage!));
+                      }
                     } else {
                       if (appController.timePincode.value == 3) {
                         AppDialog().normalDialog(

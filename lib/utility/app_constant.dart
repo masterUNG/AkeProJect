@@ -39,11 +39,14 @@ class AppConstant {
     return const TextStyle(fontSize: 36, fontWeight: FontWeight.bold);
   }
 
-  TextStyle h2style() {
-    return const TextStyle(fontSize: 22, fontWeight: FontWeight.w700);
+  TextStyle h2style({double? size}) {
+    return TextStyle(fontSize: size ?? 22, fontWeight: FontWeight.w700);
   }
 
-  TextStyle h3style() {
-    return const TextStyle(fontSize: 14, fontWeight: FontWeight.normal);
+  TextStyle h3style({Color? color, FontWeight? fontWeight}) {
+    return TextStyle(
+        fontSize: 14,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        color: color ?? Colors.black);
   }
 }

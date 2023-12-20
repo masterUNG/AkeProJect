@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:gocheckproj/models/checkup_model.dart';
 
 class AppController extends GetxController {
   RxBool redEye = true.obs;
@@ -8,4 +9,6 @@ class AppController extends GetxController {
   RxMap<String, dynamic> mapUser = <String, dynamic>{}.obs;
 
   RxInt indexBody = 0.obs;
+
+  RxList<CheckUpModel> checkUpModel = <CheckUpModel>[].obs;
 }

@@ -66,7 +66,7 @@ class _IntroductPageState extends State<IntroductPage> {
           }
         },
         done: WidgetText(
-          data: 'ต่อไป',
+          data: 'Go!',
           textStyle: AppConstant().h2style(),
         ),
         showSkipButton: true,

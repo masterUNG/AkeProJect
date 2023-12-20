@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
@@ -11,6 +12,17 @@ class BodyMain extends StatefulWidget {
 }
 
 class _BodyMainState extends State<BodyMain> {
+  var keyPages = <String>[
+    '/checkup',
+    '/visit',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
+
   var titles = <String>[
     'ประวัติการตรวจสุขภาพ',
     'ประวัติการมารักษา',
@@ -42,6 +54,9 @@ class _BodyMainState extends State<BodyMain> {
       items.add(InkWell(
         onTap: () {
           print('คุณแตะที่ >>>>>> $i');
+          if (keyPages[i].isNotEmpty) {
+            Get.toNamed(keyPages[i]);
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),

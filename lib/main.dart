@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gocheckproj/states/authen.dart';
+import 'package:gocheckproj/states/checkup_page.dart';
 import 'package:gocheckproj/states/introduct_page.dart';
 import 'package:gocheckproj/states/main_hone.dart';
 import 'package:gocheckproj/states/pincode.dart';
+import 'package:gocheckproj/states/visit_page.dart';
 
 var getPages = <GetPage<dynamic>>[
   GetPage(
@@ -24,6 +26,14 @@ var getPages = <GetPage<dynamic>>[
   GetPage(
     name: '/intro',
     page: () => const IntroductPage(),
+  ),
+  GetPage(
+    name: '/checkup',
+    page: () => const CheckUpPage(),
+  ),
+  GetPage(
+    name: '/visit',
+    page: () => const VisitPage(),
   ),
 ];
 

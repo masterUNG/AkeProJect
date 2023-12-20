@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:gocheckproj/states/authen.dart';
+import 'package:gocheckproj/states/introduct_page.dart';
 import 'package:gocheckproj/states/main_hone.dart';
 import 'package:gocheckproj/states/pincode.dart';
 
@@ -20,6 +21,10 @@ var getPages = <GetPage<dynamic>>[
     name: '/mainHome',
     page: () => const MainHome(),
   ),
+  GetPage(
+    name: '/intro',
+    page: () => const IntroductPage(),
+  ),
 ];
 
 String? firsPage;
@@ -28,19 +33,23 @@ Future<void> main() async {
   HttpOverrides.global = MyHttpOverride();
 
   await GetStorage.init().then((value) {
-    var user = GetStorage().read('user');
-    
+    bool displayIntro = GetStorage().read('intro') ?? true;
 
-    if (user == null) {
-      firsPage = '/authen';
+    if (displayIntro) {
+      firsPage = '/intro';
       runApp(const MyApp());
     } else {
-      firsPage = '/pincode';
-      runApp(const MyApp());
+      var user = GetStorage().read('user');
+
+      if (user == null) {
+        firsPage = '/authen';
+        runApp(const MyApp());
+      } else {
+        firsPage = '/pincode';
+        runApp(const MyApp());
+      }
     }
   });
-
-  
 }
 
 class MyApp extends StatelessWidget {

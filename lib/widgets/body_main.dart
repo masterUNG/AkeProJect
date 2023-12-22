@@ -12,6 +12,8 @@ class BodyMain extends StatefulWidget {
 }
 
 class _BodyMainState extends State<BodyMain> {
+  var hieght, width;
+
   var keyPages = <String>[
     '/checkup',
     '/visit',
@@ -23,17 +25,6 @@ class _BodyMainState extends State<BodyMain> {
     '',
   ];
 
-  var titles = <String>[
-    'ประวัติการตรวจสุขภาพ',
-    'ประวัติการมารักษา',
-    'ประวัติการตรวจ Lab',
-    'ประวัติได้รับยา',
-    'ประวัติการ X-Ray',
-    'ประวัติแพ้ยา',
-    'ประวัติรับวัคซีน',
-    'สมรรถภาพทางกาย ทร.',
-  ];
-
   var pathImages = <String>[
     'images/image1.png',
     'images/image2.png',
@@ -41,8 +32,15 @@ class _BodyMainState extends State<BodyMain> {
     'images/image4.png',
     'images/image5.png',
     'images/image6.png',
-    'images/image7.png',
-    'images/image8.png',
+  ];
+
+  var titles = <String>[
+    'ตรวจสุขภาพ',
+    'การมารักษา',
+    'การตรวจ Lab',
+    'การได้รับยา',
+    'ประวัติรับวัคซีน',
+    'สมรรถภาพทางกาย ทร.',
   ];
 
   var items = <Widget>[];
@@ -51,51 +49,159 @@ class _BodyMainState extends State<BodyMain> {
   void initState() {
     super.initState();
     for (var i = 0; i < titles.length; i++) {
-      items.add(InkWell(
-        onTap: () {
-          print('คุณแตะที่ >>>>>> $i');
-          if (keyPages[i].isNotEmpty) {
-            Get.toNamed(keyPages[i]);
-          }
-        },
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(15),
-              gradient: LinearGradient(
-                  colors: [Colors.white, AppConstant.mainColor],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight)
-              //color: AppConstant.primaryColor.withOpacity(0.2),
-              ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              WidgetImageAsset(
-                path: pathImages[i],
-                width: 80,
-              ),
-              WidgetText(data: titles[i]),
-            ],
+      items.add(
+        InkWell(
+          onTap: () {
+            if (keyPages[i].isNotEmpty) {
+              Get.toNamed(keyPages[i]);
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  spreadRadius: 1,
+                  blurRadius: 6,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                WidgetImageAsset(
+                  path: pathImages[i],
+                  width: 80,
+                ),
+                WidgetText(
+                  data: titles[i],
+                  textStyle: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
           ),
         ),
-      ));
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      itemCount: items.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 8,
-          childAspectRatio: 4 / 5),
-      itemBuilder: (context, index) => items[index],
+    hieght = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.indigo,
+          //height: hieght,
+          width: width,
+          child: Column(
+            children: [
+              Container(
+                decoration: const BoxDecoration(),
+                height: hieght * 0.3,
+                width: width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 40, left: 15, right: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () {},
+                            child: const Icon(
+                              Icons.menu,
+                              color: Colors.white,
+                              size: 35,
+                            ),
+                          ),
+                          Container(
+                            height: 55,
+                            width: 55,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                                image: const DecorationImage(
+                                    image: AssetImage(
+                                        'images/avatar_profile_icon.png'))),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        top: 1,
+                        left: 20,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WidgetText(
+                            data: 'รายการสุขภาพของท่าน',
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                letterSpacing: 0.5,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          WidgetText(
+                            data: 'ชื่อ-สกลุ',
+                            textStyle: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 16,
+                            ),
+                          ),
+                          WidgetText(
+                            data: 'อายุ',
+                            textStyle: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30))),
+                  // height: hieght ,
+                  width: width,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1.1,
+                      mainAxisSpacing: 25,
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: pathImages.length,
+                    itemBuilder: (context, index) => items[index],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

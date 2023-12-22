@@ -66,7 +66,7 @@ class _PinCodeState extends State<PinCode> {
                   length: 6,
                   width: 250,
                   fieldStyle: FieldStyle.box,
-                  onCompleted: (value) {
+                  onCompleted: (value) async {
                     if (value == appController.mapUser['pincode']) {
                       if (widget.activePage == null) {
                         Get.offAllNamed(goActivePage!);
@@ -78,24 +78,33 @@ class _PinCodeState extends State<PinCode> {
                       }
                     } else {
                       if (appController.timePincode.value == 3) {
-                        AppDialog().normalDialog(
-                            title: 'โปรด Login ใหม่',
+                        // ลบข้อมูลใน GetStorage
+                        await GetStorage().erase().then((value) {
+                          // แสดง Dialog แจ้งเตือนให้ Login ใหม่
+                          AppDialog().normalDialog(
+                            title: 'PIN CODE ผิดพลาด',
                             iconWidget: const WidgetImageAsset(
                               path: 'images/pincode.png',
                               width: 200,
                             ),
-                            contentWidget: const WidgetText(
-                                data:
-                                    'ผิด 3 ครั้ง!!  โปรด Login และ ตั้งค่า PIN CODE ใหม่อีกครั้ง '),
-                            actionWidget: WidgetButton(
-                              text: 'Login',
-                              pressFunc: () async {
-                                await GetStorage().erase().then((value) {
+                            contentWidget: const Center(
+                              child: WidgetText(
+                                  data:
+                                      'ท่านกรอกผิด 3 ครั้ง!!  โปรด Login ใหม่ '),
+                            ),
+                            actionWidget: Center(
+                              child: WidgetButton(
+                                text: 'LOGIN',
+                                pressFunc: () {
+                                  // กลับไปยังหน้า Login
                                   Get.back();
+                                  // โหลดหน้า Login
                                   Get.offAllNamed('/authen');
-                                });
-                              },
-                            ));
+                                },
+                              ),
+                            ),
+                          );
+                        });
                       } else {
                         AppSnackBar(
                                 title: 'PIN CODE พิดพลาด',

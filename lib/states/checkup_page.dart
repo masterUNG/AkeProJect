@@ -6,6 +6,7 @@ import 'package:gocheckproj/utility/app_service.dart';
 import 'package:gocheckproj/widgets/widget_icon_button.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
 import 'package:gocheckproj/widgets/widget_text_rich.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CheckUpPage extends StatefulWidget {
   const CheckUpPage({super.key});
@@ -46,11 +47,18 @@ class _CheckUpPageState extends State<CheckUpPage> {
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
-                      color: index % 2 == 1
+              borderRadius: BorderRadius.circular(20),
+              color: index % 2 == 1
                           ? Colors.white
-                          : AppConstant.mainColor.withOpacity(0.10),
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(10)),
+                          : AppConstant.blueColor.withOpacity(0.05),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 1,
+                  blurRadius: 6,
+                ),
+              ],
+            ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -72,6 +80,9 @@ class _CheckUpPageState extends State<CheckUpPage> {
                           data: AppService().changeDateTimeToString(
                               dateTimeString:
                                   appController.checkUpModel[index].visittime)),
+                      WidgetText_Rich(
+                          head: 'คลินิก',
+                          tail: appController.checkUpModel[index].objective),
                       WidgetText(
                         data: 'นัดฟังผลตรวจ',
                         textStyle: AppConstant().h2style(size: 16),
@@ -83,22 +94,19 @@ class _CheckUpPageState extends State<CheckUpPage> {
                               data: AppService().changeDateTimeToString(
                                   dateTimeString: appController
                                       .checkUpModel[index].appointmentdate)),
-                          WidgetText_Rich(
-                              head: 'BMI',
-                              colorHead:
-                                  AppService().calculateColorBmi(bmi: appController.checkUpModel[index].bmi),
-                              tail: appController.checkUpModel[index].bmi
-                                  .toString())
+
+                          // WidgetText_Rich(
+                          //     head: 'BMI',
+                          //     colorHead: AppService().calculateColorBmi(
+                          //         bmi: appController.checkUpModel[index].bmi),
+                          //     tail: appController.checkUpModel[index].bmi
+                          //         .toString())
                         ],
                       ),
                       ExpansionTile(
                         expandedCrossAxisAlignment: CrossAxisAlignment.start,
                         title: const WidgetText(data: 'รายละเอียด'),
                         children: [
-                          WidgetText_Rich(
-                              head: 'จุดประสงค์ที่มา',
-                              tail:
-                                  appController.checkUpModel[index].objective),
                           WidgetText_Rich(
                               head: 'แพทย์ผู้ตรวจ',
                               tail:
@@ -109,16 +117,121 @@ class _CheckUpPageState extends State<CheckUpPage> {
                           ExpansionTile(
                             expandedCrossAxisAlignment:
                                 CrossAxisAlignment.start,
-                            title: WidgetText(data: 'ผลตรวจ'),
+                            title:
+                                const WidgetText(data: 'ผลตรวจร่างกายทั่วไป'),
                             children: [
                               WidgetText_Rich(
                                   head: 'BMI',
                                   tail: appController.checkUpModel[index].bmi
                                       .toString()),
+                              SfLinearGauge(
+                                minimum: 0,
+                                maximum: 50,
+                                ranges: const <LinearGaugeRange>[
+                                  LinearGaugeRange(
+                                    startValue: 0,
+                                    endValue: 18.5,
+                                    color:
+                                        Colors.red, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 18.5,
+                                    endValue: 25,
+                                    color:
+                                        Colors.green, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 25,
+                                    endValue: 50,
+                                    color:
+                                        Colors.red, // กำหนดสีสำหรับ range นี้
+                                  )
+                                ],
+                                markerPointers: [
+                                  LinearShapePointer(
+                                      value:
+                                          appController.checkUpModel[index].bmi,
+                                      color: Colors.black)
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
                               WidgetText_Rich(
-                                  head: 'BMI',
-                                  tail: appController.checkUpModel[index].bmi
+                                  head: 'ความดันตัวบน',
+                                  tail: appController
+                                      .checkUpModel[index].systolic
                                       .toString()),
+                              SfLinearGauge(
+                                minimum: 80,
+                                maximum: 200,
+                                ranges: const <LinearGaugeRange>[
+                                  LinearGaugeRange(
+                                    startValue: 0,
+                                    endValue: 120,
+                                    color:
+                                        Colors.green, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 120,
+                                    endValue: 130,
+                                    color: Colors
+                                        .orange, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 130,
+                                    endValue: 200,
+                                    color:
+                                        Colors.red, // กำหนดสีสำหรับ range นี้
+                                  )
+                                ],
+                                markerPointers: [
+                                  LinearShapePointer(
+                                    value: double.parse(appController
+                                        .checkUpModel[index].systolic!),
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              WidgetText_Rich(
+                                  head: 'ความดันตัวล่าง',
+                                  tail: appController
+                                      .checkUpModel[index].diastolic
+                                      .toString()),
+                              SfLinearGauge(
+                                minimum: 40,
+                                maximum: 120,
+                                ranges: const <LinearGaugeRange>[
+                                  LinearGaugeRange(
+                                    startValue: 0,
+                                    endValue: 120,
+                                    color:
+                                        Colors.green, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 90,
+                                    endValue: 110,
+                                    color: Colors
+                                        .orange, // กำหนดสีสำหรับ range นี้
+                                  ),
+                                  LinearGaugeRange(
+                                    startValue: 110,
+                                    endValue: 120,
+                                    color:
+                                        Colors.red, // กำหนดสีสำหรับ range นี้
+                                  )
+                                ],
+                                markerPointers: [
+                                  LinearShapePointer(
+                                    value: double.parse(appController
+                                        .checkUpModel[index].diastolic!),
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ],
@@ -131,3 +244,6 @@ class _CheckUpPageState extends State<CheckUpPage> {
     );
   }
 }
+
+
+

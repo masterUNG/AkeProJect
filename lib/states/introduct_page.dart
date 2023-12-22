@@ -16,19 +16,19 @@ class IntroductPage extends StatefulWidget {
 class _IntroductPageState extends State<IntroductPage> {
   var pathImages = <String>[
     'images/doctor1.png',
-    'images/doctor2.png',
-    'images/doctor3.png',
+    //'images/doctor2.png',
+    //'images/doctor3.png',
   ];
 
   var titles = <String>[
-    'หัวข้ออธิบาย 1',
-    'หัวข้ออธิบาย 2',
-    'หัวข้ออธิบาย 3',
+    'คำเตือน ข้อมูลสุขภาพส่วนบุคคล',
+    //'หัวข้ออธิบาย 2',
+    //'หัวข้ออธิบาย 3',
   ];
   var textBody = <String>[
-    'ส่วนขยายความ 1',
-    'ส่วนขยายความ 2',
-    'ส่วนขยายความ 3',
+    'บุคคลใดละเมิดและนำไปใช้โดยไม่ได้แจ้งให้ทราบ และไม่ได้รับความยินยอมจากเจ้าของข้อมูล จะมีความผิดตามพระราชบัญญัติ คุ้มครองข้อมูลส่วนบุคคล พ.ศ.2562',
+    //'ส่วนขยายความ 2',
+    //'ส่วนขยายความ 3',
   ];
 
   var pages = <PageViewModel>[];
@@ -66,7 +66,7 @@ class _IntroductPageState extends State<IntroductPage> {
           }
         },
         done: WidgetText(
-          data: 'Go!',
+          data: 'GoCheck',
           textStyle: AppConstant().h2style(),
         ),
         showSkipButton: true,

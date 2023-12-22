@@ -170,12 +170,12 @@ class AppService {
   Color calculateColorBmi({required double bmi}) {
     Color color;
 
-    if (bmi < 26.0) {
-      color = Colors.green;
-    } else if (bmi < 26.8) {
-      color = Colors.yellow;
-    } else {
+    if (bmi < 18.5) {
       color = Colors.red;
+    } else if (bmi > 22.9) {
+      color = Colors.red;
+    } else {
+      color = Colors.green;
     }
     return color;
   }

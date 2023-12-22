@@ -10,6 +10,7 @@ class AppConstant {
   static String appName = 'GoCheck NEXT';
   static Color primaryColor = Color.fromARGB(255, 31, 128, 60);
   static Color mainColor = Color.fromARGB(255, 57, 194, 248);
+  static Color blueColor = Color.fromARGB(255, 17, 32, 252);
 
   //method
 

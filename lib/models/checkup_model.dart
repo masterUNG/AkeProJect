@@ -9,6 +9,8 @@ class CheckUpModel {
   final String doctorname;
   final String remark;
   final double bmi;
+  final String? systolic;
+  final String? diastolic;
   CheckUpModel({
     required this.visittime,
     required this.hospitalCode,
@@ -17,6 +19,8 @@ class CheckUpModel {
     required this.doctorname,
     required this.remark,
     required this.bmi,
+    required this.systolic,
+    this.diastolic,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,6 +32,8 @@ class CheckUpModel {
       'doctorname': doctorname,
       'remark': remark,
       'bmi': bmi,
+      'systolic': systolic,
+      'diastolic': diastolic,
     };
   }
 
@@ -40,6 +46,8 @@ class CheckUpModel {
       doctorname: (map['doctorname'] ?? '') as String,
       remark: (map['remark'] ?? '') as String,
       bmi: (map['bmi'] ?? 0.0) as double,
+      systolic: map['systolic'] != null ? map['systolic'] as String : null,
+      diastolic: map['diastolic'] != null ? map['diastolic'] as String : null,
     );
   }
 

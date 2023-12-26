@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
+import 'package:gocheckproj/utility/app_controllor.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
 
@@ -12,6 +13,8 @@ class BodyMain extends StatefulWidget {
 }
 
 class _BodyMainState extends State<BodyMain> {
+
+  
   var hieght, width;
 
   var keyPages = <String>[
@@ -57,7 +60,7 @@ class _BodyMainState extends State<BodyMain> {
             }
           },
           child: Container(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,

@@ -8,8 +8,8 @@ class AppConstant {
   static String contentText =
       'Lorem Ipsum คือ เนื้อหาจำลองแบบเรียบๆ ที่ใช้กันในธุรกิจงานพิมพ์หรืองานเรียงพิมพ์ มันได้กลายมาเป็นเนื้อหาจำลองมาตรฐานของธุรกิจดังกล่าวมาตั้งแต่ศตวรรษที่ 16 เมื่อเครื่องพิมพ์โนเนมเครื่องหนึ่งนำรางตัวพิมพ์มาสลับสับตำแหน่งตัวอักษรเพื่อทำหนังสือตัวอย่าง Lorem Ipsum อยู่ยงคงกระพันมาไม่ใช่แค่เพียงห้าศตวรรษ แต่อยู่มาจนถึงยุคที่พลิกโฉมเข้าสู่งานเรียงพิมพ์ด้วยวิธีทางอิเล็กทรอนิกส์ และยังคงสภาพเดิมไว้อย่างไม่มีการเปลี่ยนแปลง มันได้รับความนิยมมากขึ้นในยุค ค.ศ. 1960';
   static String appName = 'GoCheck NEXT';
-  static Color primaryColor = Color.fromARGB(255, 31, 128, 60);
-  static Color mainColor = Color.fromARGB(255, 57, 194, 248);
+  static Color primaryColor = Color.fromARGB(255, 63, 167, 94);
+  static Color mainColor = Colors.indigo;
   static Color blueColor = Color.fromARGB(255, 17, 32, 252);
 
   //method

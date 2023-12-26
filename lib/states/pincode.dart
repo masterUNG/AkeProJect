@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
-import 'package:gocheckproj/states/main_hone.dart';
+import 'package:gocheckproj/states/main_home.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
 import 'package:gocheckproj/utility/app_dialog.dart';
 import 'package:gocheckproj/utility/app_service.dart';

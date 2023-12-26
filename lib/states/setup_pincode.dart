@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gocheckproj/states/main_hone.dart';
+import 'package:gocheckproj/states/main_home.dart';
 import 'package:gocheckproj/utility/app_service.dart';
 import 'package:gocheckproj/utility/app_snackbar.dart';
 import 'package:otp_text_field/otp_field.dart';

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:gocheckproj/models/checkup_model.dart';
+import 'package:gocheckproj/models/medicaltreat_model.dart';
 import 'package:gocheckproj/models/user_model.dart';
 import 'package:gocheckproj/states/pincode.dart';
 import 'package:gocheckproj/states/setup_pincode.dart';
@@ -79,6 +80,8 @@ class AppService {
     appController.mapUser.value = await GetStorage().read('user');
   }
 
+  // ดึงข้อมูล ตรวจสุขภาพ
+
   Future<void> readCheckUpResult() async {
     String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/checkup_result';
 
@@ -98,6 +101,8 @@ class AppService {
 
     try {
       await dio.post(urlApi, data: map).then((value) {
+        print('Response Data: ${value.data}');
+
         if (appController.checkUpModel.isNotEmpty) {
           appController.checkUpModel.clear();
         }
@@ -107,6 +112,7 @@ class AppService {
           CheckUpModel checkUpModel = CheckUpModel.fromMap(element);
           appController.checkUpModel.add(checkUpModel);
         });
+        appController.checkUpModel.sort((a, b) => b.visittime.compareTo(a.visittime));
       });
     } on Exception catch (e) {
       print(e);
@@ -129,6 +135,70 @@ class AppService {
           ));
     }
   }
+
+  // ดึงข้อมูล การมารักษา
+
+  Future<void> readMedicalTreatResult() async {
+    String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/ovst';
+
+    Map<String, dynamic> map = {};
+    var valueIdentificationNumber = <String>[];
+    valueIdentificationNumber.add(appController.mapUser['username']);
+    //print('##20dec >>>>>>>$valueIdentificationNumberovst');
+
+    map['identificationNumber'] = valueIdentificationNumber;
+
+    //print('##20dec >>>>>>>$map');
+
+    Dio dio = Dio();
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        'Bearer ${appController.mapUser["token"]}';
+    //print('##25dec >>>>>>>>>>>>>>>>>>>>>>${appController.mapUser}');
+
+    try {
+      await dio.post(urlApi, data: map).then((value) {
+        //print('Response Data: ${value.data}');
+        if (appController.medicalTreatModel.isNotEmpty) {
+          appController.medicalTreatModel.clear();
+        }
+
+        var data = value.data['data'];
+        //print('##25dec >>>>>>>>>>>>>>>>>>>>>>$data');
+        //print('Data from API: $data');
+
+        data.forEach((element) {
+          MedicalTreatModel medicalTreatModel =
+              MedicalTreatModel.fromMap(element);
+          appController.medicalTreatModel.add(medicalTreatModel);
+        });
+        appController.medicalTreatModel.sort((a, b) => b.vstdate.compareTo(a.vstdate));
+      });
+    } on Exception catch (e) {
+      print(e);
+      
+
+      AppDialog().normalDialog(
+          title: 'เวลา Login หมดอายุ ',
+          contentWidget:
+              const Center(child: WidgetText(data: 'กรุณาใส่ PIN CODE ใหม่')),
+          iconWidget: const WidgetImageAsset(
+            path: 'images/doctor1.png',
+          ),
+          actionWidget: WidgetButton(
+            text: 'PIN CODE',
+            pressFunc: () {
+              Get.back();
+              Get.offAll(const PinCode(
+                activePage: '/visit',
+              ));
+            },
+          ));
+    }
+  }
+
+  //    UpdateToken
 
   Future<void> processUpdateToken() async {
     if (appController.mapUser.isEmpty) {

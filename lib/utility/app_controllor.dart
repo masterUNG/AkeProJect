@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gocheckproj/models/checkup_model.dart';
+import 'package:gocheckproj/models/medicaltreat_model.dart';
 
 class AppController extends GetxController {
   RxBool redEye = true.obs;
@@ -11,4 +12,6 @@ class AppController extends GetxController {
   RxInt indexBody = 0.obs;
 
   RxList<CheckUpModel> checkUpModel = <CheckUpModel>[].obs;
+
+  RxList<MedicalTreatModel> medicalTreatModel = <MedicalTreatModel>[].obs;
 }

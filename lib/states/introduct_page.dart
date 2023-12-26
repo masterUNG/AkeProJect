@@ -15,7 +15,7 @@ class IntroductPage extends StatefulWidget {
 
 class _IntroductPageState extends State<IntroductPage> {
   var pathImages = <String>[
-    'images/doctor1.png',
+    'images/introPDPA.png',
     //'images/doctor2.png',
     //'images/doctor3.png',
   ];

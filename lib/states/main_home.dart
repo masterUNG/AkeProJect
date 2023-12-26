@@ -37,7 +37,7 @@ class _MainHomeState extends State<MainHome> {
     super.initState();
     for (var i = 0; i < bodys.length; i++) {
       items.add(
-        BottomNavigationBarItem(icon: iconWidgets[i], label: titles[i]),
+        BottomNavigationBarItem(icon: iconWidgets[i], label: titles[i],backgroundColor: Colors.indigo),
       );
     }
   }
@@ -46,10 +46,7 @@ class _MainHomeState extends State<MainHome> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Scaffold(
-        appBar: AppBar(
-          title: WidgetText(data: titles[appController.indexBody.value]),
-          centerTitle: true,
-        ),
+        
         body: bodys[appController.indexBody.value],
         bottomNavigationBar: BottomNavigationBar(
           items: items,

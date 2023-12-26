@@ -34,31 +34,34 @@ class _CheckUpPageState extends State<CheckUpPage> {
           iconData: Icons.arrow_back,
           preesFunc: () => Get.offAllNamed('/mainHome'),
         ),
-        title: const WidgetText(data: 'ตรวจสุขภาพ'),
+        title: const WidgetText(
+            data: 'ตรวจสุขภาพประจำปี',
+            textStyle: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.indigo,
       ),
       body: Obx(() {
         return appController.checkUpModel.isEmpty
             ? const SizedBox()
             : ListView.builder(
-                reverse: true,
+                reverse: false,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: appController.checkUpModel.length,
                 itemBuilder: (context, index) => Container(
                   padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.only(bottom: 8),
                   decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: index % 2 == 1
-                          ? Colors.white
-                          : AppConstant.blueColor.withOpacity(0.05),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  spreadRadius: 1,
-                  blurRadius: 6,
-                ),
-              ],
-            ),
+                    borderRadius: BorderRadius.circular(20),
+                    color: index % 2 == 1
+                        ? Colors.white
+                        : AppConstant.blueColor.withOpacity(0.05),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        spreadRadius: 1,
+                        blurRadius: 6,
+                      ),
+                    ],
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -70,10 +73,9 @@ class _CheckUpPageState extends State<CheckUpPage> {
                             data: 'วันไปตรวจ',
                             textStyle: AppConstant().h2style(size: 16),
                           ),
-                          WidgetText_Rich(
-                              head: 'โรงพยาบาล',
-                              tail: appController
-                                  .checkUpModel[index].hospitalCode)
+                          WidgetText(
+                              data:
+                                  'โรงพยาบาล : ${_getHospitalName(appController.checkUpModel[index].hospitalCode)}')
                         ],
                       ),
                       WidgetText(
@@ -243,7 +245,17 @@ class _CheckUpPageState extends State<CheckUpPage> {
       }),
     );
   }
+
+  String _getHospitalName(String hospitalCode) {
+    switch (hospitalCode) {
+      case 'ABHAKORN':
+        return 'อาภากร';
+      case 'PINKLAO':
+        return 'สมเด็จพระปิ่นเกล้า';
+      case 'SIRIKIT':
+        return 'สมเด็จพระนางเจ้าสิริกิติ์';
+      default:
+        return 'ไม่พบข้อมูลโรงพยาบาล';
+    }
+  }
 }
-
-
-

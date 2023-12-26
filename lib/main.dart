@@ -6,9 +6,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:gocheckproj/states/authen.dart';
 import 'package:gocheckproj/states/checkup_page.dart';
 import 'package:gocheckproj/states/introduct_page.dart';
-import 'package:gocheckproj/states/main_hone.dart';
+import 'package:gocheckproj/states/main_home.dart';
 import 'package:gocheckproj/states/pincode.dart';
 import 'package:gocheckproj/states/visit_page.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 var getPages = <GetPage<dynamic>>[
   GetPage(
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('th');
     return GetMaterialApp(
       getPages: getPages,
       initialRoute: firsPage,

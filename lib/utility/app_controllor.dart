@@ -1,5 +1,8 @@
 import 'package:get/get.dart';
 import 'package:gocheckproj/models/checkup_model.dart';
+import 'package:gocheckproj/models/drug_model.dart';
+import 'package:gocheckproj/models/lab_model.dart';
+
 import 'package:gocheckproj/models/medicaltreat_model.dart';
 
 class AppController extends GetxController {
@@ -14,4 +17,8 @@ class AppController extends GetxController {
   RxList<CheckUpModel> checkUpModel = <CheckUpModel>[].obs;
 
   RxList<MedicalTreatModel> medicalTreatModel = <MedicalTreatModel>[].obs;
+
+  RxList<DrugModel> drugModel = <DrugModel>[].obs;
+
+  RxList<LabModel> labModel = <LabModel>[].obs;
 }

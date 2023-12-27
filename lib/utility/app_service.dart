@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:gocheckproj/models/checkup_model.dart';
+import 'package:gocheckproj/models/drug_model.dart';
+import 'package:gocheckproj/models/lab_model.dart';
 import 'package:gocheckproj/models/medicaltreat_model.dart';
 import 'package:gocheckproj/models/user_model.dart';
 import 'package:gocheckproj/states/pincode.dart';
@@ -197,6 +199,132 @@ class AppService {
           ));
     }
   }
+//   ดึงข้อมูลยา
+Future<void> readDrugResult() async {
+    String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/ovst_prescription';
+
+    Map<String, dynamic> map = {};
+    var valueIdentificationNumber = <String>[];
+    valueIdentificationNumber.add(appController.mapUser['username']);
+    //print('##20dec >>>>>>>$valueIdentificationNumberovst');
+
+    map['identificationNumber'] = valueIdentificationNumber;
+
+    //print('##20dec >>>>>>>$map');
+
+    Dio dio = Dio();
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        'Bearer ${appController.mapUser["token"]}';
+    //print('##25dec >>>>>>>>>>>>>>>>>>>>>>${appController.mapUser}');
+
+    try {
+      await dio.post(urlApi, data: map).then((value) {
+        //print('Response Data: ${value.data}');
+        if (appController.drugModel.isNotEmpty) {
+          appController.drugModel.clear();
+        }
+
+        var data = value.data['data'];
+        //print('##25dec >>>>>>>>>>>>>>>>>>>>>>$data');
+        //print('Data from API: $data');
+
+        data.forEach((element) {
+          DrugModel drugModel =
+              DrugModel.fromMap(element);
+          appController.drugModel.add(drugModel);
+        });
+        appController.drugModel.sort((a, b) => b.vstdate.compareTo(a.vstdate));
+      });
+    } on Exception catch (e) {
+      print(e);
+      
+
+      AppDialog().normalDialog(
+          title: 'เวลา Login หมดอายุ ',
+          contentWidget:
+              const Center(child: WidgetText(data: 'กรุณาใส่ PIN CODE ใหม่')),
+          iconWidget: const WidgetImageAsset(
+            path: 'images/doctor1.png',
+          ),
+          actionWidget: WidgetButton(
+            text: 'PIN CODE',
+            pressFunc: () {
+              Get.back();
+              Get.offAll(const PinCode(
+                activePage: '/visit',
+              ));
+            },
+          ));
+    }
+  }
+
+
+  //   ดึงข้อมูล Lab
+Future<void> readLabResult() async {
+    String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/patient_lab_result';
+
+    Map<String, dynamic> map = {};
+    var valueIdentificationNumber = <String>[];
+    valueIdentificationNumber.add(appController.mapUser['username']);
+    //print('##20dec >>>>>>>$valueIdentificationNumberovst');
+
+    map['identificationNumber'] = valueIdentificationNumber;
+
+    //print('##20dec >>>>>>>$map');
+
+    Dio dio = Dio();
+
+    dio.options.headers['Content-Type'] = 'application/json';
+    dio.options.headers['Authorization'] =
+        'Bearer ${appController.mapUser["token"]}';
+    //print('##25dec >>>>>>>>>>>>>>>>>>>>>>${appController.mapUser}');
+
+    try {
+      await dio.post(urlApi, data: map).then((value) {
+        print('Response Data: ${value.data}');
+        if (appController.labModel.isNotEmpty) {
+          appController.labModel.clear();
+        }
+
+        var data = value.data['data'];
+        //print('##25dec >>>>>>>>>>>>>>>>>>>>>>$data');
+        //print('Data from API: $data');
+
+        data.forEach((element) {
+          LabModel labModel =
+              LabModel.fromMap(element);
+          appController.labModel.add(labModel);
+        });
+        appController.labModel.sort((a, b) => b.report_date!.compareTo(a.report_date!));
+      });
+    } on Exception catch (e) {
+      print(e);
+      
+
+      AppDialog().normalDialog(
+          title: 'เวลา Login หมดอายุ ',
+          contentWidget:
+              const Center(child: WidgetText(data: 'กรุณาใส่ PIN CODE ใหม่')),
+          iconWidget: const WidgetImageAsset(
+            path: 'images/doctor1.png',
+          ),
+          actionWidget: WidgetButton(
+            text: 'PIN CODE',
+            pressFunc: () {
+              Get.back();
+              Get.offAll(const PinCode(
+                activePage: '/visit',
+              ));
+            },
+          ));
+    }
+  }
+
+
+
+
 
   //    UpdateToken
 

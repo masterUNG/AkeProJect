@@ -50,4 +50,10 @@ class AppConstant {
         fontWeight: fontWeight ?? FontWeight.normal,
         color: color ?? Colors.black);
   }
+
+  static const contentStyleHeader = TextStyle(
+      color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700);
+
+  static const contentStyle = TextStyle(
+      color: Colors.black45, fontSize: 14, fontWeight: FontWeight.normal);
 }

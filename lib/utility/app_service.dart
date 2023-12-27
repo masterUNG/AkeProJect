@@ -32,7 +32,7 @@ class AppService {
     Map<String, String> map = {};
     map['username'] = username;
     map['password'] = password;
-    print('map ที่ได้  >>>>> $map');
+    // print('map ที่ได้  >>>>> $map');
 
     try {
       await Dio().post(AppConstant.urlLoginApi, data: map).then((value) {
@@ -44,7 +44,7 @@ class AppService {
 
         mapUser['password'] = password;
 
-        print('### 19dec usermodel  ....>>> $mapUser');
+        //  print('### 19dec usermodel  ....>>> $mapUser');
 
         AppDialog().normalDialog(
             title: 'กำหนด PIN CODE',
@@ -64,7 +64,7 @@ class AppService {
             ));
       });
     } on Exception catch (e) {
-      print('นี่คือ error จาก API >>>>> $e');
+      //  print('นี่คือ error จาก API >>>>> $e');
       AppSnackBar(
               title: 'เข้าระบบผิดพลาด',
               message: 'กรุณาตรวจสอบ username หรือ password')
@@ -93,7 +93,7 @@ class AppService {
 
     map['identificationNumber'] = valueIdentificationNumber;
 
-    print('##20dec >>>>>>>$map');
+    //print('##20dec >>>>>>>$map');
 
     Dio dio = Dio();
 
@@ -103,7 +103,7 @@ class AppService {
 
     try {
       await dio.post(urlApi, data: map).then((value) {
-        print('Response Data: ${value.data}');
+       //  print('Response Data: ${value.data}');
 
         if (appController.checkUpModel.isNotEmpty) {
           appController.checkUpModel.clear();
@@ -114,7 +114,8 @@ class AppService {
           CheckUpModel checkUpModel = CheckUpModel.fromMap(element);
           appController.checkUpModel.add(checkUpModel);
         });
-        appController.checkUpModel.sort((a, b) => b.visittime.compareTo(a.visittime));
+        appController.checkUpModel
+            .sort((a, b) => b.visittime.compareTo(a.visittime));
       });
     } on Exception catch (e) {
       print(e);
@@ -175,11 +176,11 @@ class AppService {
               MedicalTreatModel.fromMap(element);
           appController.medicalTreatModel.add(medicalTreatModel);
         });
-        appController.medicalTreatModel.sort((a, b) => b.vstdate.compareTo(a.vstdate));
+        appController.medicalTreatModel
+            .sort((a, b) => b.vstdate.compareTo(a.vstdate));
       });
     } on Exception catch (e) {
       print(e);
-      
 
       AppDialog().normalDialog(
           title: 'เวลา Login หมดอายุ ',
@@ -199,8 +200,9 @@ class AppService {
           ));
     }
   }
+
 //   ดึงข้อมูลยา
-Future<void> readDrugResult() async {
+  Future<void> readDrugResult() async {
     String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/ovst_prescription';
 
     Map<String, dynamic> map = {};
@@ -231,15 +233,13 @@ Future<void> readDrugResult() async {
         //print('Data from API: $data');
 
         data.forEach((element) {
-          DrugModel drugModel =
-              DrugModel.fromMap(element);
+          DrugModel drugModel = DrugModel.fromMap(element);
           appController.drugModel.add(drugModel);
         });
         appController.drugModel.sort((a, b) => b.vstdate.compareTo(a.vstdate));
       });
     } on Exception catch (e) {
       print(e);
-      
 
       AppDialog().normalDialog(
           title: 'เวลา Login หมดอายุ ',
@@ -260,9 +260,8 @@ Future<void> readDrugResult() async {
     }
   }
 
-
   //   ดึงข้อมูล Lab
-Future<void> readLabResult() async {
+  Future<void> readLabResult() async {
     String urlApi = 'https://go.nmd.go.th/gohiApiNEXT/patient_lab_result';
 
     Map<String, dynamic> map = {};
@@ -293,15 +292,14 @@ Future<void> readLabResult() async {
         //print('Data from API: $data');
 
         data.forEach((element) {
-          LabModel labModel =
-              LabModel.fromMap(element);
+          LabModel labModel = LabModel.fromMap(element);
           appController.labModel.add(labModel);
         });
-        appController.labModel.sort((a, b) => b.report_date!.compareTo(a.report_date!));
+        appController.labModel
+            .sort((a, b) => b.report_date!.compareTo(a.report_date!));
       });
     } on Exception catch (e) {
       print(e);
-      
 
       AppDialog().normalDialog(
           title: 'เวลา Login หมดอายุ ',
@@ -321,10 +319,6 @@ Future<void> readLabResult() async {
           ));
     }
   }
-
-
-
-
 
   //    UpdateToken
 

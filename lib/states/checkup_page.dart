@@ -123,41 +123,66 @@ class _CheckUpPageState extends State<CheckUpPage> {
                                 const WidgetText(data: 'ผลตรวจร่างกายทั่วไป'),
                             children: [
                               WidgetText_Rich(
+                                  head: 'น้ำหนัก',
+                                  tail: appController.checkUpModel[index].weight
+                                      .toString() ),
+                                      const SizedBox(height: 10,),
+                              WidgetText_Rich(
+                                  head: 'ส่วนสูง',
+                                  tail: appController.checkUpModel[index].height
+                                      .toString() ?? 'N/A'),
+                                      const SizedBox(height: 10,),
+                                      WidgetText_Rich(
+                                  head: 'รอบเอว',
+                                  tail: appController.checkUpModel[index].waistline
+                                      .toString() ?? 'N/A'),
+                                      const SizedBox(height: 10,),
+                              WidgetText_Rich(
                                   head: 'BMI',
                                   tail: appController.checkUpModel[index].bmi
                                       .toString()),
-                              SfLinearGauge(
-                                minimum: 0,
-                                maximum: 50,
-                                ranges: const <LinearGaugeRange>[
-                                  LinearGaugeRange(
-                                    startValue: 0,
-                                    endValue: 18.5,
-                                    color:
-                                        Colors.red, // กำหนดสีสำหรับ range นี้
+                              Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
                                   ),
-                                  LinearGaugeRange(
-                                    startValue: 18.5,
-                                    endValue: 25,
-                                    color:
-                                        Colors.green, // กำหนดสีสำหรับ range นี้
-                                  ),
-                                  LinearGaugeRange(
-                                    startValue: 25,
-                                    endValue: 50,
-                                    color:
-                                        Colors.red, // กำหนดสีสำหรับ range นี้
-                                  )
-                                ],
-                                markerPointers: [
-                                  LinearShapePointer(
-                                      value:
-                                          appController.checkUpModel[index].bmi,
-                                      color: Colors.black)
-                                ],
+                                ),
+                                child: SfLinearGauge(
+                                  minimum: 0,
+                                  maximum: 50,
+                                  ranges: const <LinearGaugeRange>[
+                                    LinearGaugeRange(
+                                      startValue: 0,
+                                      endValue: 18.5,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 18.5,
+                                      endValue: 25,
+                                      color: Colors
+                                          .green, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 25,
+                                      endValue: 50,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    )
+                                  ],
+                                  markerPointers: [
+                                    LinearShapePointer(
+                                        value: appController
+                                            .checkUpModel[index].bmi,
+                                        color: Colors.black)
+                                  ],
+                                ),
                               ),
                               const SizedBox(
-                                height: 10,
+                                height: 20,
                               ),
                               WidgetText_Rich(
                                   head: 'ความดันตัวบน',
@@ -203,9 +228,110 @@ class _CheckUpPageState extends State<CheckUpPage> {
                                   tail: appController
                                       .checkUpModel[index].diastolic
                                       .toString()),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                child: SfLinearGauge(
+                                  minimum: 40,
+                                  maximum: 120,
+                                  ranges: const <LinearGaugeRange>[
+                                    LinearGaugeRange(
+                                      startValue: 0,
+                                      endValue: 120,
+                                      color: Colors
+                                          .green, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 90,
+                                      endValue: 110,
+                                      color: Colors
+                                          .orange, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 110,
+                                      endValue: 120,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    )
+                                  ],
+                                  markerPointers: [
+                                    LinearShapePointer(
+                                      value: double.parse(appController
+                                          .checkUpModel[index].diastolic!),
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          ExpansionTile(
+                            expandedCrossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            title:
+                                const WidgetText(data: 'ผลตรวจร่างกายทั่วไป'),
+                            children: [
+                              WidgetText_Rich(
+                                  head: 'BMI',
+                                  tail: appController.checkUpModel[index].bmi
+                                      .toString()),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                child: SfLinearGauge(
+                                  minimum: 0,
+                                  maximum: 50,
+                                  ranges: const <LinearGaugeRange>[
+                                    LinearGaugeRange(
+                                      startValue: 0,
+                                      endValue: 18.5,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 18.5,
+                                      endValue: 25,
+                                      color: Colors
+                                          .green, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 25,
+                                      endValue: 50,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    )
+                                  ],
+                                  markerPointers: [
+                                    LinearShapePointer(
+                                        value: appController
+                                            .checkUpModel[index].bmi,
+                                        color: Colors.black)
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              WidgetText_Rich(
+                                  head: 'ความดันตัวบน',
+                                  tail: appController
+                                      .checkUpModel[index].systolic
+                                      .toString()),
                               SfLinearGauge(
-                                minimum: 40,
-                                maximum: 120,
+                                minimum: 80,
+                                maximum: 200,
                                 ranges: const <LinearGaugeRange>[
                                   LinearGaugeRange(
                                     startValue: 0,
@@ -214,14 +340,14 @@ class _CheckUpPageState extends State<CheckUpPage> {
                                         Colors.green, // กำหนดสีสำหรับ range นี้
                                   ),
                                   LinearGaugeRange(
-                                    startValue: 90,
-                                    endValue: 110,
+                                    startValue: 120,
+                                    endValue: 130,
                                     color: Colors
                                         .orange, // กำหนดสีสำหรับ range นี้
                                   ),
                                   LinearGaugeRange(
-                                    startValue: 110,
-                                    endValue: 120,
+                                    startValue: 130,
+                                    endValue: 200,
                                     color:
                                         Colors.red, // กำหนดสีสำหรับ range นี้
                                   )
@@ -229,10 +355,59 @@ class _CheckUpPageState extends State<CheckUpPage> {
                                 markerPointers: [
                                   LinearShapePointer(
                                     value: double.parse(appController
-                                        .checkUpModel[index].diastolic!),
+                                        .checkUpModel[index].systolic!),
                                     color: Colors.black,
                                   ),
                                 ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              WidgetText_Rich(
+                                  head: 'ความดันตัวล่าง',
+                                  tail: appController
+                                      .checkUpModel[index].diastolic
+                                      .toString()),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.black,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
+                                child: SfLinearGauge(
+                                  minimum: 40,
+                                  maximum: 120,
+                                  ranges: const <LinearGaugeRange>[
+                                    LinearGaugeRange(
+                                      startValue: 0,
+                                      endValue: 120,
+                                      color: Colors
+                                          .green, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 90,
+                                      endValue: 110,
+                                      color: Colors
+                                          .orange, // กำหนดสีสำหรับ range นี้
+                                    ),
+                                    LinearGaugeRange(
+                                      startValue: 110,
+                                      endValue: 120,
+                                      color:
+                                          Colors.red, // กำหนดสีสำหรับ range นี้
+                                    )
+                                  ],
+                                  markerPointers: [
+                                    LinearShapePointer(
+                                      value: double.parse(appController
+                                          .checkUpModel[index].diastolic!),
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

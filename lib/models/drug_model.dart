@@ -66,7 +66,7 @@ class DrugModel {
       vn: (map['vn'] ?? '') as String,
       vstdate: (map['vstdate'] ?? '') as String,
       icode: (map['icode'] ?? '') as String,
-      name: (map['name'] ?? '') as String,
+      name: (map['name'] ?? 'ไม่พบข้อมูล') as String,
       strength: (map['strength'] ?? '') as String,
       units: (map['units'] ?? '') as String,
       qty: (map['qty'] ?? 0) as int,

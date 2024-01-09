@@ -65,7 +65,7 @@ class AppService {
             ));
       });
     } on Exception catch (e) {
-      //  print('นี่คือ error จาก API >>>>> $e');
+       print('###### นี่คือ error จาก API >>>>> $e');
       AppSnackBar(
               title: 'เข้าระบบผิดพลาด',
               message: 'กรุณาตรวจสอบ username หรือ password')

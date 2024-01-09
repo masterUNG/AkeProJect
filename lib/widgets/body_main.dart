@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
+import 'package:gocheckproj/utility/app_service.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
 import 'package:gocheckproj/widgets/widget_text.dart';
 
@@ -13,8 +14,8 @@ class BodyMain extends StatefulWidget {
 }
 
 class _BodyMainState extends State<BodyMain> {
+  AppController appController = Get.put(AppController());
 
-  
   var hieght, width;
 
   var keyPages = <String>[
@@ -90,6 +91,9 @@ class _BodyMainState extends State<BodyMain> {
         ),
       );
     }
+    AppService()
+        .processFindMapUser()
+        .then((value) => AppService().readCheckUpResult());
   }
 
   @override
@@ -97,88 +101,120 @@ class _BodyMainState extends State<BodyMain> {
     hieght = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.indigo,
-          //height: hieght,
-          width: width,
-          child: Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(),
-                height: hieght * 0.3,
-                width: width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 40, left: 15, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {},
-                            child: const Icon(
-                              Icons.menu,
-                              color: Colors.white,
-                              size: 35,
+      body: Obx(() {
+        var latestCheckUp = appController.checkUpModel.isNotEmpty
+            ? appController.checkUpModel.last
+            : null;
+        return SingleChildScrollView(
+          child: Container(
+            color: Colors.indigo,
+            //height: hieght,
+            width: width,
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(),
+                  height: hieght * 0.3,
+                  width: width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 45, left: 15, right: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 55,
+                              width: 55,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                  image: const DecorationImage(
+                                      image: AssetImage(
+                                          'images/splash200.png'))),
                             ),
-                          ),
-                          Container(
-                            height: 55,
-                            width: 55,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.white,
-                                image: const DecorationImage(
-                                    image: AssetImage(
-                                        'images/avatar_profile_icon.png'))),
-                          )
-                        ],
+                            Container(
+                              height: 55,
+                              width: 55,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.white,
+                                  image: const DecorationImage(
+                                      image: AssetImage(
+                                          'images/avatar_profile_icon.png'))),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        top: 1,
-                        left: 20,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          WidgetText(
-                            data: 'รายการสุขภาพของท่าน',
-                            textStyle: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                letterSpacing: 0.5,
-                                fontWeight: FontWeight.w500),
+                      Padding(
+                          padding: const EdgeInsets.only(
+                            top: 1,
+                            left: 20,
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          WidgetText(
-                            data: 'ชื่อ-สกลุ',
-                            textStyle: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 16,
-                            ),
-                          ),
-                          WidgetText(
-                            data: 'อายุ',
-                            textStyle: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 16,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const WidgetText(
+                                data: 'รายการสุขภาพของท่าน',
+                                textStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  letterSpacing: 0.5,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  WidgetText(
+                                    data: latestCheckUp?.pname.toString() ??
+                                        'N/A',
+                                    textStyle: const TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  WidgetText(
+                                    data: latestCheckUp?.fname.toString() ??
+                                        'N/A',
+                                    textStyle: const TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  WidgetText(
+                                    data: latestCheckUp?.lname.toString() ??
+                                        'N/A',
+                                    textStyle: const TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              //คำนวณอายุก่อนส่งให้ WidgetText
+                              WidgetText(
+                                data: latestCheckUp != null
+                                    ? 'อายุ ${_calculateAge(DateTime.parse(latestCheckUp.birthday!.toString()))} ปี'
+                                    : 'N/A',
+                                textStyle: const TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-              SingleChildScrollView(
-                child: Container(
+                Container(
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -199,12 +235,18 @@ class _BodyMainState extends State<BodyMain> {
                     itemCount: pathImages.length,
                     itemBuilder: (context, index) => items[index],
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
+  }
+
+  String _calculateAge(DateTime birthday) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthday.year;
+    return age.toString();
   }
 }

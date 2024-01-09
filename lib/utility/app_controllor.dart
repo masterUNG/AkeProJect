@@ -10,6 +10,8 @@ class AppController extends GetxController {
 
   RxInt timePincode = 1.obs;
 
+  RxInt age = 0.obs;
+
   RxMap<String, dynamic> mapUser = <String, dynamic>{}.obs;
 
   RxInt indexBody = 0.obs;
@@ -21,4 +23,7 @@ class AppController extends GetxController {
   RxList<DrugModel> drugModel = <DrugModel>[].obs;
 
   RxList<LabModel> labModel = <LabModel>[].obs;
+
+
+  
 }

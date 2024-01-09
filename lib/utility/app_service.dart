@@ -103,7 +103,7 @@ class AppService {
 
     try {
       await dio.post(urlApi, data: map).then((value) {
-       //  print('Response Data: ${value.data}');
+        //  print('Response Data: ${value.data}');
 
         if (appController.checkUpModel.isNotEmpty) {
           appController.checkUpModel.clear();
@@ -282,7 +282,7 @@ class AppService {
 
     try {
       await dio.post(urlApi, data: map).then((value) {
-        print('Response Data: ${value.data}');
+       // print('Response Data: ${value.data}');
         if (appController.labModel.isNotEmpty) {
           appController.labModel.clear();
         }
@@ -372,3 +372,8 @@ class AppService {
     return color;
   }
 }
+
+
+
+
+

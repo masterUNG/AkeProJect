@@ -30,8 +30,7 @@ class _VisitPageState extends State<VisitPage> {
         AppService().readDrugResult();
         AppService().readLabResult();
       });
-    }
-    );
+    });
   }
 
   @override
@@ -47,276 +46,314 @@ class _VisitPageState extends State<VisitPage> {
         backgroundColor: Colors.indigo,
       ),
       body: Obx(() {
-        return appController.medicalTreatModel.isEmpty
-            ? const SizedBox()
-            : ListView.builder(
-                reverse: false,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: appController.medicalTreatModel.length,
-                itemBuilder: (context, index) {
-                  //************match ข้อมูล Drug และ medicalTreat *******
-                  List<DrugModel> matchingDrugModels = appController.drugModel
-                      .where((drugModel) =>
-                          drugModel.vstdate ==
-                          appController.medicalTreatModel[index].vstdate)
-                      .toList();
-                  //************match ข้อมูล Lab และ medicalTreat *******
-                  List<LabModel> matchingLabModels = appController.labModel
-                      .where((labModel) =>
-                          labModel.report_date ==
-                          appController.medicalTreatModel[index].vstdate)
-                      .toList();
+        if (appController.medicalTreatModel.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListView.builder(
+            reverse: false,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: appController.medicalTreatModel.length,
+            itemBuilder: (context, index) {
+              //************match ข้อมูล Drug และ medicalTreat *******
+              List<DrugModel> matchingDrugModels = appController.drugModel
+                  .where((drugModel) =>
+                      drugModel.vn == appController.medicalTreatModel[index].vn)
+                  .toList();
+              //************match ข้อมูล Lab และ medicalTreat *******
 
-                  // print('#######Matching Lab Models: $matchingLabModels');
+              List<LabModel> matchingLabModels = appController.labModel
+                  .where((labModel) =>
+                      labModel.vn == appController.medicalTreatModel[index].vn)
+                  .toList();
 
-                  return Container(
-                    padding: const EdgeInsets.all(8),
-                    margin: const EdgeInsets.only(bottom: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: index % 2 == 1
-                          ? Colors.white
-                          : Colors.blueGrey.withOpacity(0.01),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 238, 238, 238),
-                          spreadRadius: 2,
-                          blurRadius: 0,
-                        ),
-                      ],
+              // print('#######Matching Lab Models: $matchingLabModels');
+
+              return Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: index % 2 == 1
+                      ? Colors.white
+                      : Colors.blueGrey.withOpacity(0.01),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 224, 224, 224),
+                      spreadRadius: 2,
+                      blurRadius: 0,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WidgetText(
-                              data: 'ตรวจเมื่อวันที่',
-                              textStyle: AppConstant().h2style(size: 16),
-                            ),
-                            WidgetText(
-                                data:
-                                    'โรงพยาบาล : ${_getHospitalName(appController.medicalTreatModel[index].hospitalCode)}')
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            WidgetText(
-                                data: AppService().changeDateTimeToString(
-                                    dateTimeString: appController
-                                        .medicalTreatModel[index].vstdate)),
-                            WidgetText_Rich(
-                                head: 'HN :',
-                                tail:
-                                    appController.medicalTreatModel[index].hn),
-                          ],
-                        ),
-                        WidgetText_Rich(
-                            head: 'คลินิก',
-                            tail: appController
-                                .medicalTreatModel[index].spcltyname),
                         WidgetText(
-                          data: 'การรักษา',
+                          data: 'ตรวจเมื่อวันที่',
                           textStyle: AppConstant().h2style(size: 16),
                         ),
-                        WidgetText_Rich(
-                            head: 'สิทธิ์การรักษา',
-                            tail: appController
-                                .medicalTreatModel[index].pttypename),
-                        WidgetText_Rich(
-                            head: 'แพทย์ผู้ตรวจ',
-                            tail: appController
-                                .medicalTreatModel[index].doctorname),
-                        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                        if (matchingDrugModels.isNotEmpty)
-                          ExpansionTile(
-                            backgroundColor: Colors.black12,
-                            collapsedBackgroundColor:
-                                const Color.fromARGB(255, 129, 159, 173),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            collapsedShape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            expandedCrossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            title: const Center(
-                              child: WidgetText(
-                                data: 'ยาที่ได้รับ',
-                                textStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  sortAscending: true,
-                                  sortColumnIndex: 1,
-                                  showBottomBorder: false,
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('ลำดับ',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                      numeric: true,
-                                    ),
-                                    DataColumn(
-                                      label: Text('รายการ',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                    ),
-                                    DataColumn(
-                                      label: Text('จำนวน',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                      numeric: true,
-                                    ),
-                                    DataColumn(
-                                      label: Text('หน่วย',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                      numeric: true,
-                                    ),
-                                  ],
-                                  rows: matchingDrugModels
-                                      .asMap()
-                                      .entries
-                                      .map<DataRow>((entry) {
-                                    final bool isEven = entry.key.isEven;
-                                    return DataRow(
-                                      color: isEven
-                                          ? MaterialStateProperty.all<Color>(
-                                              Colors.white.withOpacity(0.3))
-                                          : null,
-                                      cells: [
-                                        DataCell(
-                                          Text('${entry.key + 1}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.center),
-                                        ),
-                                        DataCell(
-                                          Text('${entry.value.name}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.start),
-                                        ),
-                                        DataCell(
-                                          Text('${entry.value.qty}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.start),
-                                        ),
-                                        DataCell(
-                                          Text('${entry.value.units}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.start),
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                              // ตำแหน่งที่เป็น children ของ ExpansionTile สำหรับ DataTable
-                            ],
-                          ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-                        if (matchingLabModels.isNotEmpty)
-                          ExpansionTile(
-                            backgroundColor: Colors.black12,
-                            collapsedBackgroundColor:
-                                const Color.fromARGB(255, 129, 159, 173),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            collapsedShape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            expandedCrossAxisAlignment:
-                                CrossAxisAlignment.start,
-                            title: const Center(
-                              child: WidgetText(
-                                data: 'ตรวจ Lab',
-                                textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: DataTable(
-                                  sortAscending: true,
-                                  sortColumnIndex: 1,
-                                  showBottomBorder: false,
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('ลำดับ',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                      numeric: true,
-                                    ),
-                                    DataColumn(
-                                      label: Text('รายการ',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                    ),
-                                    DataColumn(
-                                      label: Text('ผลตรวจ',
-                                          style:
-                                              AppConstant.contentStyleHeader),
-                                      numeric: true,
-                                    ),
-                                  ],
-                                  rows: matchingLabModels
-                                      .asMap()
-                                      .entries
-                                      .map<DataRow>((entry) {
-                                    final bool isEven = entry.key.isEven;
-                                    return DataRow(
-                                      color: isEven
-                                          ? MaterialStateProperty.all<Color>(
-                                              Colors.white.withOpacity(0.3))
-                                          : null,
-                                      cells: [
-                                        DataCell(
-                                          Text('${entry.key + 1}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.center),
-                                        ),
-                                        DataCell(
-                                          Text('${entry.value.lab_items_name}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.start),
-                                        ),
-                                        DataCell(
-                                          Text(
-                                              '${entry.value.lab_order_result}',
-                                              style: AppConstant.contentStyle,
-                                              textAlign: TextAlign.start),
-                                        ),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                              // ตำแหน่งที่เป็น children ของ ExpansionTile สำหรับ DataTable
-                            ],
-                          ),
-// ...
+                        WidgetText(
+                            data:
+                                'โรงพยาบาล : ${_getHospitalName(appController.medicalTreatModel[index].hospitalCode)}')
                       ],
                     ),
-                  );
-                },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        WidgetText(
+                            data: AppService().changeDateTimeToString(
+                                dateTimeString: appController
+                                    .medicalTreatModel[index].vstdate)),
+                        WidgetText_Rich(
+                            head: 'HN :',
+                            tail: appController.medicalTreatModel[index].hn),
+                      ],
+                    ),
+                    WidgetText_Rich(
+                        head: 'คลินิก',
+                        tail:
+                            appController.medicalTreatModel[index].spcltyname),
+                    WidgetText(
+                      data: 'การรักษา',
+                      textStyle: AppConstant().h2style(size: 16),
+                    ),
+                    WidgetText_Rich(
+                        head: 'สิทธิ์การรักษา',
+                        tail:
+                            appController.medicalTreatModel[index].pttypename),
+                    WidgetText_Rich(
+                        head: 'แพทย์ผู้ตรวจ',
+                        tail:
+                            appController.medicalTreatModel[index].doctorname),
+                    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    if (matchingDrugModels.isNotEmpty)
+                      ExpansionTile(
+                        backgroundColor: Colors.black12,
+                        collapsedBackgroundColor:
+                            const Color.fromARGB(255, 129, 159, 173),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        collapsedShape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        title: const Center(
+                          child: WidgetText(
+                            data: 'ยาที่ได้รับ',
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        children: [
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              columnSpacing: 10.0,
+                              sortAscending: true,
+                              sortColumnIndex: 1,
+                              showBottomBorder: false,
+                              columns: const [
+                                DataColumn(
+                                  label: Text('ลำดับ',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('รายการ',
+                                      style: AppConstant.contentStyleHeader),
+                                ),
+                                DataColumn(
+                                  label: Text('จำนวน',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('หน่วย',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                              ],
+                              rows: matchingDrugModels
+                                  .asMap()
+                                  .entries
+                                  .map<DataRow>((entry) {
+                                final bool isEven = entry.key.isEven;
+                                return DataRow(
+                                  color: isEven
+                                      ? MaterialStateProperty.all<Color>(
+                                          Colors.white.withOpacity(0.3))
+                                      : null,
+                                  cells: [
+                                    DataCell(
+                                      SizedBox(width: 30,
+                                        child: Text('${entry.key + 1}',
+                                            style: AppConstant.contentStyle,
+                                            textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(width: 170,height: 100,
+                                        child: Text('${entry.value.name}',
+                                            style: AppConstant.contentStyle,
+                                            textAlign: TextAlign.start,overflow: TextOverflow.fade,),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(width: 40,
+                                        child: Text('${entry.value.qty}',
+                                            style: AppConstant.contentStyle
+                                                .copyWith(color: Colors.blue),
+                                            textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(width: 40,
+                                        child: Text('${entry.value.units}',
+                                            style: AppConstant.contentStyle,
+                                            textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          // ตำแหน่งที่เป็น children ของ ExpansionTile สำหรับ DataTable
+                        ],
+                      ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+                    if (matchingLabModels.isNotEmpty)
+                      ExpansionTile(
+                        backgroundColor: Colors.black12,
+                        collapsedBackgroundColor:
+                            const Color.fromARGB(255, 129, 159, 173),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        collapsedShape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        title: const Center(
+                          child: WidgetText(
+                            data: 'ตรวจ Lab',
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        children: [
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              columnSpacing: 10.0,
+                              sortAscending: true,
+                              sortColumnIndex: 1,
+                              showBottomBorder: false,
+                              columns: const [
+                                DataColumn(
+                                  label: Text('ลำดับ',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('รายการ',
+                                      style: AppConstant.contentStyleHeader),
+                                ),
+                                DataColumn(
+                                  label: Text('ผลตรวจ',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                                DataColumn(
+                                  label: Text('ค่าปกติ',
+                                      style: AppConstant.contentStyleHeader),
+                                  numeric: true,
+                                ),
+                              ],
+                              rows: matchingLabModels
+                                  .asMap()
+                                  .entries
+                                  .map<DataRow>((entry) {
+                                final bool isEven = entry.key.isEven;
+                                return DataRow(
+                                  color: isEven
+                                      ? MaterialStateProperty.all<Color>(
+                                          Colors.white.withOpacity(0.3))
+                                      : null,
+                                  cells: [
+                                    DataCell(
+                                      SizedBox(
+                                        width: 30,
+                                        child: Text(
+                                          '${entry.key + 1}',
+                                          style: AppConstant.contentStyle,
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(
+                                        width: 150,
+                                        child: Text(
+                                          '${entry.value.lab_items_name}',
+                                          style: AppConstant.contentStyle,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.fade,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(
+                                        width: 60,
+                                        child: Text(
+                                          '${entry.value.lab_order_result}',
+                                          style: AppConstant.contentStyle
+                                                .copyWith(color: Colors.blue),
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                    DataCell(
+                                      SizedBox(
+                                        width: 70,
+                                        child: Text(
+                                          '${entry.value.lab_items_normal_value}',
+                                          style: AppConstant.contentStyle,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          // ตำแหน่งที่เป็น children ของ ExpansionTile สำหรับ DataTable
+                        ],
+                      ),
+// ...
+                  ],
+                ),
               );
+            },
+          );
+        }
       }),
     );
   }

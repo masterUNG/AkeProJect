@@ -8,12 +8,10 @@ class WidgetText_Rich extends StatelessWidget {
     Key? key,
     required this.head,
     required this.tail,
-    
     this.colorHead,
   }) : super(key: key);
   final String head;
   final String tail;
-  
 
   final Color? colorHead;
 
@@ -28,7 +26,6 @@ class WidgetText_Rich extends StatelessWidget {
         children: [
           const TextSpan(text: ' : '),
           TextSpan(text: tail, style: AppConstant().h3style()),
-          
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gocheckproj/models/checkup_model.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:gocheckproj/models/lab_model.dart';
 import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
@@ -23,6 +23,7 @@ class _CheckUpPageState extends State<CheckUpPage> {
   @override
   void initState() {
     super.initState();
+
     // เรียก `processFindMapUser` และคอยจนกระทั่งดำเนินการเสร็จสิ้น
     AppService().processFindMapUser().then((value) {
       // เมื่อดำเนินการเสร็จสิ้น, เรียก `readMedicalTreatResult` และคอยจนกระทั่งดำเนินการเสร็จสิ้น
@@ -48,14 +49,14 @@ class _CheckUpPageState extends State<CheckUpPage> {
         backgroundColor: Colors.indigo,
       ),
       body: Obx(() {
-        if (appController.checkUpModel.isEmpty) {
+        if (appController.labModel.isEmpty) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else {
           return ListView.builder(
             reverse: false,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             itemCount: appController.checkUpModel.length,
             itemBuilder: (context, index) {
               //************match ข้อมูล Lab และ medicalTreat *******
@@ -372,17 +373,41 @@ class _CheckUpPageState extends State<CheckUpPage> {
                                           textAlign: TextAlign.center),
                                     ),
                                     DataCell(
-                                      SizedBox(width: 120,
-                                        child: Text('${entry.value.lab_items_name}',
-                                            style: AppConstant.contentStyle,
-                                            textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,),
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          '${entry.value.lab_items_name}',
+                                          style: AppConstant.contentStyle,
+                                          textAlign: TextAlign.start,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
                                     ),
                                     DataCell(
-                                      Text('${entry.value.lab_order_result}',
-                                          style: AppConstant.contentStyle
-                                              .copyWith(color: Colors.blue),
-                                          textAlign: TextAlign.start),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                              '${entry.value.lab_order_result}',
+                                              style: AppConstant.contentStyle
+                                                  .copyWith(color:  Colors.blue),
+                                              textAlign: TextAlign.start),
+                                          WidgetIconButton(
+                                            iconData: Icons.help_outline,
+                                            sizeIcon: GFSize.SMALL,
+                                            color: Colors.grey,
+                                            preesFunc: () {
+                                              AppService().processLab(
+                                                  itemName: entry.value
+                                                          .lab_items_name ??
+                                                      '',
+                                                  resultValue: entry.value
+                                                          .lab_order_result ??
+                                                      '');
+                                            },
+                                          )
+                                        ],
+                                      ),
                                     ),
                                     DataCell(
                                       Text(

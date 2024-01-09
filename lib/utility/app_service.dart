@@ -9,6 +9,7 @@ import 'package:gocheckproj/models/checkup_model.dart';
 import 'package:gocheckproj/models/drug_model.dart';
 import 'package:gocheckproj/models/lab_model.dart';
 import 'package:gocheckproj/models/medicaltreat_model.dart';
+import 'package:gocheckproj/models/process_lab_model.dart';
 import 'package:gocheckproj/models/user_model.dart';
 import 'package:gocheckproj/states/pincode.dart';
 import 'package:gocheckproj/states/setup_pincode.dart';
@@ -282,7 +283,7 @@ class AppService {
 
     try {
       await dio.post(urlApi, data: map).then((value) {
-       // print('Response Data: ${value.data}');
+        // print('Response Data: ${value.data}');
         if (appController.labModel.isNotEmpty) {
           appController.labModel.clear();
         }
@@ -371,9 +372,55 @@ class AppService {
     }
     return color;
   }
+
+  Future<void> processLab(
+      {required String itemName, required String resultValue}) async {
+    String urlAPI =
+        'https://go.nmd.go.th/gohiApiNEXT/CBC_$itemName?result_value=$resultValue';
+
+    print('urlAPI ---> $urlAPI');
+
+    try {
+      await Dio().get(urlAPI).then((value) {
+        print('response ---> $value');
+
+        ProcessLabModel processLabModel = ProcessLabModel.fromMap(value.data);
+        AppDialog().normalDialog(
+            title: processLabModel.resultFlag,
+            contentWidget: WidgetText(data: processLabModel.resultText));
+      });
+    } catch (e) {
+      print('urlAPI ----> False');
+      AppSnackBar(title: 'ไม่มีข้อมูล', message: 'ไม่มีข้อมูล ข้อโทษครับ')
+          .errorSnackBar();
+    }
+  }
+
+  Future<Color?> processLabColor(
+      {required String itemName, required String resultValue}) async {
+    String urlAPI =
+        'https://go.nmd.go.th/gohiApiNEXT/CBC_$itemName?result_value=$resultValue';
+
+    print('urlAPI ---> $urlAPI');
+
+    try {
+      await Dio().get(urlAPI).then((value) {
+        print('response ---> $value');
+
+        ProcessLabModel processLabModel = ProcessLabModel.fromMap(value.data);
+        
+      });
+    } catch (e) {
+      print('urlAPI ----> False');
+     
+    }
+  }
+
+
+
+
+
+
+
+
 }
-
-
-
-
-

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gocheckproj/utility/app_constant.dart';
 import 'package:gocheckproj/utility/app_controllor.dart';
 import 'package:gocheckproj/utility/app_service.dart';
 import 'package:gocheckproj/widgets/widget_image_asset.dart';
@@ -114,7 +113,7 @@ class _BodyMainState extends State<BodyMain> {
               children: [
                 Container(
                   decoration: const BoxDecoration(),
-                  height: hieght * 0.3,
+                  height: hieght * 0.33,
                   width: width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,8 +131,8 @@ class _BodyMainState extends State<BodyMain> {
                                   borderRadius: BorderRadius.circular(15),
                                   color: Colors.white,
                                   image: const DecorationImage(
-                                      image: AssetImage(
-                                          'images/splash200.png'))),
+                                      image:
+                                          AssetImage('images/splash200.png'))),
                             ),
                             Container(
                               height: 55,

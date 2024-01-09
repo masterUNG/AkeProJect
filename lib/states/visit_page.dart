@@ -46,7 +46,7 @@ class _VisitPageState extends State<VisitPage> {
         backgroundColor: Colors.indigo,
       ),
       body: Obx(() {
-        if (appController.medicalTreatModel.isEmpty) {
+        if ((appController.drugModel.isEmpty) || (appController.labModel.isEmpty)) {
           return const Center(
             child: CircularProgressIndicator(),
           );

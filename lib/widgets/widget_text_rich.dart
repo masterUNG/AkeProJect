@@ -9,11 +9,13 @@ class WidgetText_Rich extends StatelessWidget {
     required this.head,
     required this.tail,
     this.colorHead,
+    this.colorTail,
   }) : super(key: key);
   final String head;
   final String tail;
 
   final Color? colorHead;
+  final Color? colorTail;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class WidgetText_Rich extends StatelessWidget {
             fontWeight: FontWeight.bold),
         children: [
           const TextSpan(text: ' : '),
-          TextSpan(text: tail, style: AppConstant().h3style()),
+          TextSpan(text: tail, style: AppConstant().h3style(color: colorTail)),
         ],
       ),
     );
